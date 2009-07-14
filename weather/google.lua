@@ -1,34 +1,25 @@
--- TODO: url_encode 
--- based on LuaTwitter http://luaforge.net/projects/luatwitter/
+-- Author: Ryohsuke MIURA(miura-r at klab dot org:s/at/@/ and s/dot/./)
 
-----------------------------------------------------------------------------------------------------------
--- Title: LuaTwitter.
--- Description: Lua client for Twitter API (visit http://apiwiki.twitter.com/ for API details).
--- Version: 0.1d
--- Author: Kamil Kapron (kkapron@gmail.com).
--- Creation date: May 12-14, 2009.
--- Last update: June 16, 2009.
---
+-- based on LuaTwitter(Kamil Kapron) http://luaforge.net/projects/luatwitter/
 -- Legal: Copyright (C) 2009 Kamil Kapron.
 --
---Permission is hereby granted, free of charge, to any person obtaining a copy
---of this software and associated documentation files (the "Software"), to deal
---in the Software without restriction, including without limitation the rights
---to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
---copies of the Software, and to permit persons to whom the Software is
---furnished to do so, subject to the following conditions:
+-- Permission is hereby granted, free of charge, to any person obtaining a copy
+-- of this software and associated documentation files (the "Software"), to deal
+-- in the Software without restriction, including without limitation the rights
+-- to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+-- copies of the Software, and to permit persons to whom the Software is
+-- furnished to do so, subject to the following conditions:
 --
---The above copyright notice and this permission notice shall be included in
---all copies or substantial portions of the Software.
+-- The above copyright notice and this permission notice shall be included in
+-- all copies or substantial portions of the Software.
 --
---THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
---IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
---FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
---AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
---LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
---OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
---THE SOFTWARE.
-----------------------------------------------------------------------------------------------------------
+-- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+-- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+-- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+-- AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+-- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+-- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+-- THE SOFTWARE.
 
 local socket = require("socket")
 local http = require("socket.http")
@@ -41,7 +32,7 @@ local type = type
 local print = print
 local pairs = pairs
 
-module("weather.google", package.seeall) 
+module("weather.google", package.seeall)
 
 -- Ex.http://www.google.com/ig/api?weather=tokyo,japan&hl=ja
 local methods = {
@@ -114,7 +105,7 @@ function new(params)
    return obj
 end
 
---  bollowed from http://lua-users.org/wiki/LuaXml 
+-- bollowed from http://lua-users.org/wiki/LuaXml
 local function parseargs(s)
    local arg = {}
    string.gsub(s, "([%w_]+)=([\"'])(.-)%2", function (w, _, a)
@@ -183,14 +174,14 @@ end
 
 function WeatherGoogle:Parse(data)
    self.xml = collect(data)
-   weather = find_tag("weather", self.xml[2]) 
+   weather = find_tag("weather", self.xml[2])
 
    self.forecast_infomation = find_tag("forecast_information", weather)
    self.info = self.forecast_infomation
    self.city = find_tag("city", self.info).xarg.data
    self.date = find_tag("forecast_date", self.info).xarg.data
 
-   self.current_conditions = find_tag("current_conditions", weather) 
+   self.current_conditions = find_tag("current_conditions", weather)
    local tag_map
    tag_map = function (x)
 		if type(x) == "table" and x.label and x.xarg.data then
@@ -206,7 +197,7 @@ function WeatherGoogle:Parse(data)
    self.current = self.current_conditions
    self.today = self.current
 
-   self.forecast_conditions = find_tag("forecast_conditions", weather) 
+   self.forecast_conditions = find_tag("forecast_conditions", weather)
    for k,v in pairs(self.forecast_conditions) do
       ck,cv = tag_map(v)
       if ck and cv then
