@@ -1,2 +1,2 @@
-See test.lua and weather/google.lua.
-The googleweather.lua is a sample code for nikkei linux magazine.
+See googleweather and weather/google.lua.
+The googleweather is a sample code of weather/google.lua for nikkei linux magazine.
