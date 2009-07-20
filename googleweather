@@ -2,14 +2,18 @@
 weather=require("weather.google")
 loc="Tokyo,Japan"
 cond=""
-if arg[1] == "-today" and arg[2] then
-   w=weather.new({weather=arg[2], hl="en"})
-   cond=w.today.condition
-elseif arg[1] == "-tomorrow" and arg[2] then
-   w=weather.new({weather=arg[2], hl="en"})
-   cond=w.tomorrow.condition
-else
-   w=weather.new({weather=loc, hl="en"})
-   cond=w.today.condition
+function main()
+    if arg[1] == "-today" and arg[2] then
+       w=weather.new({weather=arg[2], hl="en"})
+       cond=w.today.condition
+    elseif arg[1] == "-tomorrow" and arg[2] then
+       w=weather.new({weather=arg[2], hl="en"})
+       cond=w.tomorrow.condition
+    else
+       w=weather.new({weather=loc, hl="en"})
+       cond=w.today.condition
+    end
+    print(cond)
 end
-print(cond)
+status,err=pcall(main)
+if not status then print(err.msg) end

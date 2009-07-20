@@ -1,4 +1,4 @@
--- Author: Ryohsuke MIURA(miura-r at klab dot org:s/at/@/ and s/dot/./)
+-- Author: Ryohsuke MIURA(miura-r at klab dot org |sed -e 's/at/@/' -e 's/dot/./')
 
 -- based on LuaTwitter(Kamil Kapron) http://luaforge.net/projects/luatwitter/
 -- Legal: Copyright (C) 2009 Kamil Kapron.
@@ -99,7 +99,7 @@ function new(params)
    obj:SetParams(method, params)
    status, data = obj:Request()
    if not status then
-      error({code=data.errorCode, msg="Can not connect google weather"})
+      error({code=data.errorCode, msg="Can not request google weather api"})
    end
    obj:Parse(data)
    return obj
@@ -178,8 +178,10 @@ function WeatherGoogle:Parse(data)
 
    self.forecast_infomation = find_tag("forecast_information", weather)
    self.info = self.forecast_infomation
-   self.city = find_tag("city", self.info).xarg.data
-   self.date = find_tag("forecast_date", self.info).xarg.data
+   city = find_tag("city", self.info)
+   if city.xarg then self.city = city.xarg.data else error({msg="Unknown"}) end
+   date = find_tag("forecast_date", self.info)
+   if date.xarg then self.date = date.xarg.data else error({msg="Unknown"})end
 
    self.current_conditions = find_tag("current_conditions", weather)
    local tag_map
